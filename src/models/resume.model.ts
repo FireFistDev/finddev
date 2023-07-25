@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-export type ResumeDocument = Resume & Document;
+import * as mongoose from 'mongoose';
+export type ResumeDocument = Resume & mongoose.Document;
 
 @Schema()
 export class Resume {
+  @Prop({default:''})
+  owner :string
   @Prop({ required: true })
   jobTitle: string;
   @Prop({ required: true })

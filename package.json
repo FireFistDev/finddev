@@ -1,8 +1,8 @@
 {
   "name": "finddev",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "simple app to find Developer easy",
+  "author": "akaki gumberidze",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

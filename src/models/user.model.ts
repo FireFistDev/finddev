@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { resumeDTO } from 'src/dto/resume.dto';
 
 export type UserDocument = User & Document;
@@ -12,9 +12,10 @@ export class User {
   password: string;
   @Prop({ required: true })
   confirmPassword: string;
-  @Prop({default:{}})
-  resume: resumeDTO;
+  @Prop({default:{},type: {}})
+  resume: { type: mongoose.Schema.Types.ObjectId, ref: 'Resume' };;
 
 }
 
 export const userSchema = SchemaFactory.createForClass(User);
+

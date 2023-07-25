@@ -21,7 +21,7 @@ export class ResumeService {
   async createResume(data: resumeDTO,userId:string) {
     try {
       if (!data) return;
-      const resume = await this.resumeModel.create(data);
+      const resume = await this.resumeModel.create({...data,owner:userId});
       const updatedUser = await this.userModel.findByIdAndUpdate(
         userId,
         { resume: resume }, // Set the resume field to the newly created resume

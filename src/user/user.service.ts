@@ -23,8 +23,9 @@ export class UserService {
         password: password,
         confirmPassword: password,
       });
+      const payload = { sub: newPerson._id, email: newPerson.email };
 
-      return { status: 'succese', data: newPerson };
+      return { status: 'succese', data: newPerson, access_token: await this.jwtService.signAsync(payload),};
     } catch (error) {
       return error.message;
     }
