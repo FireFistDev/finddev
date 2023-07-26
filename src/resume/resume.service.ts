@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { resumeDTO } from 'src/dto/resume.dto';
 import { Resume, ResumeDocument } from 'src/models/resume.model';
 import { User, UserDocument } from 'src/models/user.model';
-
+let prevResumeIndex = -1;
 @Injectable()
 export class ResumeService {
   constructor(
@@ -13,7 +13,16 @@ export class ResumeService {
   ) {}
   async getAllResume() {
     try {
-      return await this.resumeModel.find();
+      const resume = await this.resumeModel.find();
+      let resumeIndex: number;
+  
+      // Generate a random index different from the previous one
+      do {
+        resumeIndex = Math.floor(Math.random() * resume.length);
+      } while (resumeIndex === prevResumeIndex);
+  
+      prevResumeIndex = resumeIndex; // Store the current index as previous for the next request
+      return resume[resumeIndex];
     } catch (error) {
       return error.message;
     }

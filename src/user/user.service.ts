@@ -15,8 +15,8 @@ export class UserService {
   async createUser(data: userDTO) {
     try {
       const saltOrRounds = 10; // You can adjust the number of rounds as needed (higher value means more secure but slower)
-      if (data.password !== data.confirmPassword)
-        return { status: 'failed', message: 'password does not match' };
+      if(!data.password ) return { status: 'failed', message: 'password does not present' };
+      if (data.password !== data.confirmPassword) return { status: 'failed', message: 'password does not match' };
       const password = await bcrypt.hash(data.password, saltOrRounds);
       const newPerson = await this.userModel.create({
         email: data.email,
@@ -24,7 +24,7 @@ export class UserService {
         confirmPassword: password,
       });
       const payload = { sub: newPerson._id, email: newPerson.email };
-
+      console.log(payload)
       return { status: 'succese', data: newPerson, access_token: await this.jwtService.signAsync(payload),};
     } catch (error) {
       return error.message;
