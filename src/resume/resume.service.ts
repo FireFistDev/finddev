@@ -43,10 +43,18 @@ export class ResumeService {
   }
   async filterResume(data:{jobTitle:string}) {
     try {
-      if (!data) return;
-      return await this.resumeModel.find(data);
+      const resume = await this.resumeModel.find(data);
+      let resumeIndex: number;
+  
+      // Generate a random index different from the previous one
+      do {
+        resumeIndex = Math.floor(Math.random() * resume.length);
+      } while (resumeIndex === prevResumeIndex);
+  
+      prevResumeIndex = resumeIndex; // Store the current index as previous for the next request
+      return resume[resumeIndex];
     } catch (error) {
-        return error.message;
+      return error.message;
     }
   }
   async updateResume(id: string, data: Partial<resumeDTO>) {
