@@ -35,9 +35,8 @@ export class ResumeService {
   }
   async getSingleResume(userId :string) {
     try {
-
-       let  resume =  await this.resumeModel.findById(userId);
-      
+      if(!userId) return 'user not existed'
+      const resume = await this.resumeModel.find({owner:userId})
         return resume;
     } catch (error) {
       return error.message;
