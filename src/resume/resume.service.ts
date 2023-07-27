@@ -13,20 +13,22 @@ export class ResumeService {
   ) {}
   async getResume(Filter: { jobTitle: string; }) {
     try {
-      let resume = await this.resumeModel.find();
-      if(Filter){
-        resume =  await this.resumeModel.find({jobTitle:Filter.jobTitle});
-      }
-      console.log(resume)
-      
+      console.log(Filter)
+      let resumes = await this.resumeModel.find();
+      if(Filter.jobTitle){
+        resumes =  await this.resumeModel.find({jobTitle:Filter.jobTitle});
+      }     
         let resumeIndex: number;
         // Generate a random index different from the previous one
+        if(resumes.length === 1) {
+          return resumes[0]
+        }
         do {
-          resumeIndex = Math.floor(Math.random() * resume.length);
+          resumeIndex = Math.floor(Math.random() * resumes.length);
         } while (resumeIndex === prevResumeIndex);
         
         prevResumeIndex = resumeIndex; // Store the current index as previous for the next request
-        return resume[resumeIndex];
+        return resumes[resumeIndex];
     } catch (error) {
       return error.message;
     }
