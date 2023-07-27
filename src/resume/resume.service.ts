@@ -11,18 +11,32 @@ export class ResumeService {
     @InjectModel(Resume.name) private resumeModel: Model<ResumeDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
-  async getAllResume() {
+  async getResume(Filter: { jobTitle: string; }) {
     try {
-      const resume = await this.resumeModel.find();
-      let resumeIndex: number;
-  
-      // Generate a random index different from the previous one
-      do {
-        resumeIndex = Math.floor(Math.random() * resume.length);
-      } while (resumeIndex === prevResumeIndex);
-  
-      prevResumeIndex = resumeIndex; // Store the current index as previous for the next request
-      return resume[resumeIndex];
+      let resume = await this.resumeModel.find();
+      if(Filter){
+        resume =  await this.resumeModel.find({jobTitle:Filter.jobTitle});
+      }
+      console.log(resume)
+      
+        let resumeIndex: number;
+        // Generate a random index different from the previous one
+        do {
+          resumeIndex = Math.floor(Math.random() * resume.length);
+        } while (resumeIndex === prevResumeIndex);
+        
+        prevResumeIndex = resumeIndex; // Store the current index as previous for the next request
+        return resume[resumeIndex];
+    } catch (error) {
+      return error.message;
+    }
+  }
+  async getSingleResume(userId :string) {
+    try {
+
+       let  resume =  await this.resumeModel.findById(userId);
+      
+        return resume;
     } catch (error) {
       return error.message;
     }
